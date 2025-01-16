@@ -10,22 +10,10 @@ O **Ticker** é um aplicativo web interativo desenvolvido em Python que permite 
 
 
 ## Tecnologias Utilizadas
-
-Este projeto é desenvolvido com as seguintes tecnologias:
-
 - **Python**
 - **Dash**
 - **Plotly**
 - **yfinance**
-## Funcionalidades
-
-- **Entrada de Tickers**: O usuário pode digitar um ou mais tickers de ações separados por vírgula (por exemplo: `AAPL, MSFT, TSLA`).
-- **Gráfico de Barras Dinâmico**: O gráfico mostra o preço mais recente de cada ação, com cores indicando se o preço subiu (verde), desceu (vermelho) ou permaneceu constante (cinza).
-- **Atualização em Tempo Real**: A cada 10 segundos, os preços das ações são atualizados automaticamente, sem a necessidade de recarregar a página.
-- **Responsive Design**: O layout se adapta a diferentes tamanhos de tela, permitindo o uso tanto em desktop quanto em dispositivos móveis.
-
-
-## Como Usar
 
 ### 1. Clonar o Repositório
 
