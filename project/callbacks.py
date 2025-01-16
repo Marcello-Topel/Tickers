@@ -1,10 +1,10 @@
-# callbacks.py
 import dash
 from dash.dependencies import Input, Output
 import plotly.graph_objs as go
 import yfinance as yf
 import pandas as pd
 
+# Função para obter os dados de ações
 def get_stock_data(ticker):
     try:
         stock = yf.Ticker(ticker)
@@ -16,6 +16,7 @@ def get_stock_data(ticker):
         print(f"Erro ao obter dados para {ticker}: {e}")
         return pd.DataFrame()
 
+# Função para registrar os callbacks
 def register_callbacks(app):
     @app.callback(
         Output('stock-graph', 'figure'),
@@ -32,8 +33,17 @@ def register_callbacks(app):
             if data.empty:
                 continue
 
+            # Preço de fechamento atual e anterior
             latest_close = data['Close'].iloc[-1]
-            color = 'gray' if n == 0 else ('green' if latest_close > data['Close'].iloc[-2] else 'red')
+            previous_close = data['Close'].iloc[-2]
+            price_change = latest_close - previous_close
+            price_change_percent = (price_change / previous_close) * 100
+
+            # Definir cor do gráfico com base na mudança de preço
+            color = 'gray' if n == 0 else ('green' if price_change > 0 else 'red')
+            price_change_text = f'{price_change_percent:+.2f}%'
+
+            # Adiciona o gráfico de barras
             fig.add_trace(go.Bar(
                 x=[ticker],
                 y=[latest_close],
@@ -41,13 +51,14 @@ def register_callbacks(app):
                 marker=dict(color=color),
                 width=0.5,
                 orientation='v',
-                text=f'{latest_close:.2f} USD',
+                text=f'{latest_close:.2f} USD ({price_change_text})',
                 textposition='inside',
                 texttemplate='%{text}',
                 hoverinfo='x+y+text',
                 hoverlabel=dict(bgcolor='white', font_size=13, font_family="Lato, sans-serif")
             ))
 
+        # Personalizando o layout do gráfico
         fig.update_layout(
             title=f'Preços Atuais das Ações: {", ".join(tickers_list)}',
             title_font=dict(size=20, color='#FFFFFF', family="Lato, sans-serif"),
