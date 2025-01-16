@@ -22,6 +22,9 @@ Este projeto é desenvolvido com as seguintes tecnologias:
 - **Gráfico de Barras Dinâmico**: O gráfico mostra o preço mais recente de cada ação, com cores indicando se o preço subiu (verde), desceu (vermelho) ou permaneceu constante (cinza).
 - **Atualização em Tempo Real**: A cada 10 segundos, os preços das ações são atualizados automaticamente, sem a necessidade de recarregar a página.
 - **Responsive Design**: O layout se adapta a diferentes tamanhos de tela, permitindo o uso tanto em desktop quanto em dispositivos móveis.
+![terceiro](https://github.com/user-attachments/assets/dab2983f-adf1-443e-a798-2a1c7d0467bc)
+![quarto](https://github.com/user-attachments/assets/dcb41e63-9fe5-43d6-81ee-473458ef1bbb)
+
 
 ## Como Usar
 
