@@ -1,22 +1,10 @@
+# callbacks/stock_callbacks.py
 import dash
 from dash.dependencies import Input, Output
 import plotly.graph_objs as go
-import yfinance as yf
 import pandas as pd
+from utils.stock_data import get_stock_data
 
-# Função para obter os dados de ações
-def get_stock_data(ticker):
-    try:
-        stock = yf.Ticker(ticker)
-        data = stock.history(period='1d', interval='1m')
-        if data.empty:
-            raise ValueError(f"Nenhum dado encontrado para o ticker: {ticker}.")
-        return data
-    except Exception as e:
-        print(f"Erro ao obter dados para {ticker}: {e}")
-        return pd.DataFrame()
-
-# Função para registrar os callbacks
 def register_callbacks(app):
     @app.callback(
         Output('stock-graph', 'figure'),
@@ -33,17 +21,21 @@ def register_callbacks(app):
             if data.empty:
                 continue
 
-            # Preço de fechamento atual e anterior
             latest_close = data['Close'].iloc[-1]
             previous_close = data['Close'].iloc[-2]
             price_change = latest_close - previous_close
             price_change_percent = (price_change / previous_close) * 100
 
-            # Definir cor do gráfico com base na mudança de preço
-            color = 'gray' if n == 0 else ('green' if price_change > 0 else 'red')
+            # Definir a cor da barra com base no movimento de preço
+            if price_change == 0:
+                color = 'gray'  # Preço não mudou
+            elif price_change > 0:
+                color = 'green'  # Preço subiu
+            else:
+                color = 'red'  # Preço caiu
+
             price_change_text = f'{price_change_percent:+.2f}%'
 
-            # Adiciona o gráfico de barras
             fig.add_trace(go.Bar(
                 x=[ticker],
                 y=[latest_close],
@@ -58,7 +50,6 @@ def register_callbacks(app):
                 hoverlabel=dict(bgcolor='white', font_size=13, font_family="Lato, sans-serif")
             ))
 
-        # Personalizando o layout do gráfico
         fig.update_layout(
             title=f'Preços Atuais das Ações: {", ".join(tickers_list)}',
             title_font=dict(size=20, color='#FFFFFF', family="Lato, sans-serif"),

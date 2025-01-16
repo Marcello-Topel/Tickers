@@ -1,16 +1,16 @@
+# app.py
 import dash
-import layout
-import callbacks
+from callbacks.stock_callbacks import register_callbacks
+from layout.stock_layout import create_stock_layout
 
 app = dash.Dash(__name__)
 app.title = 'Dados de Ações em Tempo Real'
 
-# Layout da aplicação
-app.layout = layout.create_layout()
+# Definir o layout da aplicação
+app.layout = create_stock_layout()
 
-# Registrando os callbacks
-callbacks.register_callbacks(app)
+# Registrar os callbacks
+register_callbacks(app)
 
-# Iniciando o servidor
 if __name__ == '__main__':
     app.run_server(debug=True)
